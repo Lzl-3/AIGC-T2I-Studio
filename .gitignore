@@ -1,8 +1,70 @@
-﻿*.log
-__pycache__/
-*.pyc
+# === 敏感文件 ===
 .env
-output/
+*.pem
+*.key
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+venv/
+.venv/
+
+# === 运行时数据 ===
+*.log
+*.db
+*.db-journal
 data/uploads/
 data/tasks.db
-*.db-journal
+output/
+
+# === 开发垃圾 ===
+backups/
+Kohya_ss/
+training_dataset/
+tag/
+tests/
+docs/
+characters/.trash/
+
+# === 临时脚本 ===
+check_*.py
+fix_*.py
+find_*.py
+compare.py
+show_mid.py
+temp_*.py
+temp_*.txt
+_patch_*.py
+迁移总结*
+
+# === 报告和截图 ===
+*_report.md
+*_audit.md
+*_plan.md
+*_matrix.md
+*_diff_report.md
+*_functions.md
+page_screenshot.png
+
+# === 杂项 ===
+*.docx
+筛选.txt
+提示词/
+场景LoRA训练素材*.txt
+（仿真人）*.txt
+
+# === IDE ===
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# === Windows ===
+Thumbs.db
+Desktop.ini
