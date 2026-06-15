@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>千问 Prompt 工作室</title>
+<link rel="stylesheet" href="/static/css/dark-theme.css">
+<link rel="stylesheet" href="/static/css/prompt-studio.css">
+<style>
+  body { font-family: "Microsoft YaHei", "Segoe UI", sans-serif; background: var(--bg-primary, #0d0d1a); color: var(--text-primary, #e0e0e0); margin: 0; min-height: 100vh; }
+  .ps-layout { max-width: 960px; margin: 0 auto; padding: 0 20px 40px; }
+  .ps-header { display: flex; align-items: center; gap: 16px; padding: 16px 20px; border-bottom: 1px solid var(--border-color, #333); background: var(--bg-secondary, #1a1a2e); position: sticky; top: 0; z-index: 10; }
+  .ps-header h1 { font-size: 20px; margin: 0; font-weight: 700; color: var(--accent-color, #00d4ff); }
+  .ps-back-btn { color: var(--text-secondary, #888); text-decoration: none; font-size: 14px; display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--border-color, #444); transition: all 0.2s; }
+  .ps-back-btn:hover { color: var(--accent-color, #00d4ff); border-color: var(--accent-color, #00d4ff); }
+  .ps-section { background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-color, #333); border-radius: 10px; padding: 24px; margin-top: 20px; }
+  .ps-section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .ps-section-header h2 { font-size: 17px; margin: 0; }
+  .ps-step-num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-color, #00d4ff); color: #000; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+  .ps-hint { font-size: 13px; color: var(--text-secondary, #888); }
+  .ps-textarea { width: 100%; box-sizing: border-box; background: var(--bg-primary, #0d0d1a); border: 1px solid var(--border-color, #444); border-radius: 8px; color: var(--text-primary, #e0e0e0); font-size: 14px; line-height: 1.6; padding: 14px 16px; resize: vertical; font-family: inherit; transition: border-color 0.2s; }
+  .ps-textarea:focus { outline: none; border-color: var(--accent-color, #00d4ff); box-shadow: 0 0 0 2px rgba(0,212,255,0.15); }
+  .ps-char-count { text-align: right; font-size: 12px; color: var(--text-secondary, #888); margin-top: 6px; }
+  .ps-char-count .near-limit { color: #ffa500; }
+  .ps-char-count .at-limit { color: #ff4444; }
+  .ps-btn { display: inline-flex; align-items: center; gap: 6px; padding: 10px 20px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: inherit; }
+  .ps-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .ps-btn-primary { background: var(--accent-color, #00d4ff); color: #000; }
+  .ps-btn-primary:hover:not(:disabled) { background: #00e5ff; transform: translateY(-1px); }
+  .ps-btn-accent { background: rgba(0,212,255,0.15); color: var(--accent-color, #00d4ff); border: 1px solid var(--accent-color, #00d4ff); }
+  .ps-btn-accent:hover:not(:disabled) { background: rgba(0,212,255,0.25); }
+  .ps-btn-ghost { background: transparent; color: var(--text-secondary, #888); border: 1px solid var(--border-color, #444); }
+  .ps-btn-ghost:hover:not(:disabled) { color: var(--text-primary, #e0e0e0); border-color: #666; }
+  .ps-btn-success { background: rgba(0,255,136,0.15); color: #00ff88; border: 1px solid #00ff88; }
+  .ps-btn-success:hover:not(:disabled) { background: rgba(0,255,136,0.25); }
+  .ps-loading { display: none; align-items: center; gap: 10px; padding: 12px 16px; color: var(--accent-color, #00d4ff); font-size: 14px; }
+  .ps-spinner { width: 18px; height: 18px; border: 2px solid rgba(0,212,255,0.3); border-top-color: var(--accent-color, #00d4ff); border-radius: 50%; animation: ps-spin 0.8s linear infinite; }
+  @keyframes ps-spin { to { transform: rotate(360deg); } }
+  .ps-result { display: none; }
+  .ps-field { margin-bottom: 14px; }
+  .ps-field label { display: block; font-size: 13px; color: var(--text-secondary, #888); margin-bottom: 6px; font-weight: 600; }
+  .ps-params-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .ps-field-sm { display: flex; flex-direction: column; gap: 4px; }
+  .ps-field-sm label { font-size: 12px; color: var(--text-secondary, #888); }
+  .ps-field-sm input { width: 80px; padding: 8px 10px; background: var(--bg-primary, #0d0d1a); border: 1px solid var(--border-color, #444); border-radius: 6px; color: var(--text-primary, #e0e0e0); font-size: 14px; font-family: inherit; text-align: center; }
+  .ps-field-sm input:focus { outline: none; border-color: var(--accent-color, #00d4ff); }
+  .ps-tag-badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 10px; background: rgba(0,212,255,0.15); color: var(--accent-color, #00d4ff); margin-left: 4px; }
+  .ps-code { font-family: "Consolas", "Courier New", monospace; font-size: 13px; }
+  .ps-copy-btn { padding: 6px 12px; font-size: 12px; background: transparent; border: 1px solid var(--border-color, #444); color: var(--text-secondary, #888); border-radius: 6px; cursor: pointer; }
+  .ps-copy-btn:hover { color: var(--accent-color, #00d4ff); border-color: var(--accent-color, #00d4ff); }
+  .ps-success-toast { display: none; position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: rgba(0,255,136,0.2); border: 1px solid #00ff88; color: #00ff88; padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 600; z-index: 1000; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="ps-header">
+  <a href="/" class="ps-back-btn">&#8592; 返回主页</a>
+  <h1>千问 Prompt 工作室</h1>
+  <span style="font-size:12px;color:var(--text-secondary,#888);margin-left:auto;">AI 辅助写提示词</span>
+</div>
+
+<div class="ps-layout">
+
+  <!-- Step 1: Input -->
+  <div class="ps-section">
+    <div class="ps-section-header">
+      <span class="ps-step-num">1</span>
+      <h2>自由描述</h2>
+    </div>
+    <p class="ps-hint">用中文随意描述你想要的画面，越具体效果越好</p>
+    <textarea id="qwen-raw-input" class="ps-textarea" placeholder="例如：一个穿白色汉服的女孩在樱花树下舞剑，仙侠风格，阳光透过花瓣洒落&#10;或者：赛博朋克风格的女战士，机械手臂，霓虹灯街道，雨夜" maxlength="500" rows="4"></textarea>
+    <div class="ps-char-count"><span id="qwen-char-count">0</span>/500</div>
+    <div style="margin-top:10px;">
+      <button id="qwen-btn-polish" class="ps-btn ps-btn-primary" disabled>AI 润色</button>
+    </div>
+    <div id="qwen-polish-loading" class="ps-loading">
+      <span class="ps-spinner"></span> Qwen 正在润色你的描述...
+    </div>
+  </div>
+
+  <!-- Step 2: Polish Result -->
+  <div id="qwen-polish-result" class="ps-section ps-result">
+    <div class="ps-section-header">
+      <span class="ps-step-num">2</span>
+      <h2>润色结果</h2>
+      <span class="ps-hint">可编辑</span>
+    </div>
+    <textarea id="qwen-polished-text" class="ps-textarea" rows="4" placeholder="AI 润色后的标准中文描述..."></textarea>
+    <div style="display:flex;gap:8px;margin-top:12px;">
+      <button id="qwen-btn-convert" class="ps-btn ps-btn-accent">转为 ComfyUI 格式</button>
+      <button id="qwen-btn-repolish" class="ps-btn ps-btn-ghost">重新润色</button>
+    </div>
+    <div id="qwen-convert-loading" class="ps-loading">
+      <span class="ps-spinner"></span> Qwen 正在转换为英文标签...
+    </div>
+  </div>
+
+  <!-- Step 3: Convert Result -->
+  <div id="qwen-convert-result" class="ps-section ps-result">
+    <div class="ps-section-header">
+      <span class="ps-step-num">3</span>
+      <h2>ComfyUI 格式</h2>
+      <span id="qwen-tag-count" class="ps-tag-badge">0 tags</span>
+    </div>
+    <div class="ps-field">
+      <label>正向 Prompt <button class="ps-copy-btn" onclick="copyToClipboard('qwen-positive-text')">复制</button></label>
+      <textarea id="qwen-positive-text" class="ps-textarea ps-code" rows="4" placeholder="ComfyUI 英文正向标签..." readonly></textarea>
+    </div>
+    <div class="ps-field">
+      <label>负向 Prompt <button class="ps-copy-btn" onclick="copyToClipboard('qwen-negative-text')">复制</button></label>
+      <textarea id="qwen-negative-text" class="ps-textarea ps-code" rows="2" placeholder="ComfyUI 英文负向标签..." readonly></textarea>
+    </div>
+    <div class="ps-params-row">
+      <div class="ps-field-sm"><label>宽度</label><input id="qwen-param-width" type="number" value="512" min="64" max="4096"></div>
+      <div class="ps-field-sm"><label>高度</label><input id="qwen-param-height" type="number" value="768" min="64" max="4096"></div>
+      <div class="ps-field-sm"><label>步数</label><input id="qwen-param-steps" type="number" value="20" min="1" max="100"></div>
+      <div class="ps-field-sm"><label>CFG</label><input id="qwen-param-cfg" type="number" value="7.0" min="1" max="30" step="0.5"></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:16px;">
+      <button id="qwen-btn-fill" class="ps-btn ps-btn-success">填入主页面生成面板</button>
+    </div>
+  </div>
+
+</div>
+
+<div id="ps-toast" class="ps-success-toast"></div>
+
+<script src="/static/js/api.js"></script>
+<script src="/static/js/prompt-studio.js"></script>
+<script>
+// Copy helper
+function copyToClipboard(id) {
+  var el = document.getElementById(id);
+  if (!el || !el.value) return;
+  navigator.clipboard.writeText(el.value).then(function() {
+    showToast("已复制到剪贴板");
+  }).catch(function() {
+    el.select();
+    document.execCommand("copy");
+    showToast("已复制到剪贴板");
+  });
+}
+
+function showToast(msg) {
+  var t = document.getElementById("ps-toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  setTimeout(function() { t.style.display = "none"; }, 2000);
+}
+
+// Init
+document.addEventListener("DOMContentLoaded", function() {
+  var qwen = new QwenPromptManager(null);
+  qwen.init();
+});
+</script>
+</body>
+</html>

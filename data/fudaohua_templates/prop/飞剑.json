@@ -1,0 +1,6 @@
+{
+  "type": "prop",
+  "title": "飞剑",
+  "positive_template": "{character}, {hairstyle}, holding a flying sword, silver blade with glowing blue runes, ornate golden hilt, floating in air, sharp edge, xianxia magic weapon, detailed prop, {hand_position}, {background}, {angle}, {lighting}, {quality}",
+  "negative_prompt": "worst quality, low quality, lowres, blurry, bad anatomy, extra fingers, missing fingers, fused fingers, too many fingers, watermark, text, logo, signature, username, distorted face, ugly face, deformed face, bad face, nsfw, nude, naked, cropped, out of frame, specific person, celebrity, famous face, same face, dark atmosphere, battle damage, blood, magic glow, complex background, messy composition"
+}

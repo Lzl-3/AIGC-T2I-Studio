@@ -1,0 +1,6 @@
+{
+  "type": "costume",
+  "title": "青衣书生",
+  "positive_template": "green scholar robe, bamboo pattern embroidery, simple clean cut, flowing scholarly sleeves, elegant literati attire, high detail traditional chinese scholar clothing on {character}, {hairstyle}, {makeup}, {action}, {prop}, {background}, {angle}, {lighting}, {quality}",
+  "negative_prompt": "worst quality, low quality, lowres, blurry, bad anatomy, extra fingers, missing fingers, fused fingers, too many fingers, watermark, text, logo, signature, username, distorted face, ugly face, deformed face, bad face, nsfw, nude, naked, cropped, out of frame, specific person, celebrity, famous face, same face, dark atmosphere, battle damage, blood, magic glow, complex background, messy composition"
+}

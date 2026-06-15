@@ -1,0 +1,11 @@
+{
+  "name": "老者",
+  "positive": "masterpiece,\nbest quality,\nultra detailed,\n3d cg render,\ngame cinematic,\n\nelder chinese male,\n75 years old,\n\nlong face,\nprominent cheekbones,\nsharp jawline,\n\ndeep set eyes,\nnarrow eyes,\n\nwhite eyebrows,\nlong white eyebrows,\n\nlong white beard,\nflowing beard,\n\nhigh forehead,\n\nweathered skin,\nwrinkles,\nage lines,\n\nwise expression,\ncalm expression,\n\nlong white hair,\ntopknot hairstyle,\n\nimmortal master,\ndaoist sage,\nxianxia elder,\n\nwhite and silver robe,\njade ornament,\n\nstanding,\nfull body,\n\nancient chinese immortal world,\n\nvolumetric lighting,\nray tracing,\noctane render,\n\nunreal engine 5,\nhighly detailed character,\n3d game cinematic\nidentity anchor:\n\nlong face,\ndeep set eyes,\nwhite eyebrows,\nlong white beard,\nhigh forehead,\nprominent cheekbones\n\nsame character,\nconsistent face,\nsame facial structure",
+  "negative": "young,\nteenager,\n\nfemale,\nwoman,\n\nclean shaven,\n\nblack beard,\n\nbrown beard,\n\nshort beard,\n\nmuscular bodybuilder,\n\nfat face,\n\ncute face,\n\nanime,\n\ncartoon,\n\nblurry,\n\nbad anatomy,\n\nextra fingers,\n\nmissing fingers,\n\ndeformed eyes,\n\nduplicate,\n\nlow quality",
+  "metadata": {
+    "gender": "男",
+    "age": "老年",
+    "height": "155",
+    "created_at": "2026-06-14T18:49:38.883339"
+  }
+}

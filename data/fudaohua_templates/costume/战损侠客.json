@@ -1,0 +1,6 @@
+{
+  "type": "costume",
+  "title": "战损侠客",
+  "positive_template": "torn warrior robe, leather armor shoulder pieces, bandages wrapped around torso, battle-damaged fabric edges, weathered martial attire, high detail worn clothing on {character}, {hairstyle}, {makeup}, {action}, {prop}, {background}, {angle}, {lighting}, {quality}",
+  "negative_prompt": "worst quality, low quality, lowres, blurry, bad anatomy, extra fingers, missing fingers, fused fingers, too many fingers, watermark, text, logo, signature, username, distorted face, ugly face, deformed face, bad face, nsfw, nude, naked, cropped, out of frame, specific person, celebrity, famous face, same face, dark atmosphere, battle damage, blood, magic glow, complex background, messy composition"
+}

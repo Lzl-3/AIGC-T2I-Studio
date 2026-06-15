@@ -1,0 +1,453 @@
+/* ═══════════════════════════════════════════
+   Prompt 工作室 — 独立页面样式
+   继承 dark-theme.css 的 CSS 变量体系
+   ═══════════════════════════════════════════ */
+
+/* ── 整体布局 ── */
+.ps-header {
+    display: flex; align-items: center; gap: 16px;
+    padding: 14px 24px; border-bottom: 1px solid var(--border-color, #333);
+    background: var(--bg-secondary, #1a1a2e);
+}
+.ps-header h1 { font-size: 22px; margin: 0; font-weight: 700; }
+.ps-back-btn { color: var(--text-secondary, #888); text-decoration: none; font-size: 14px; }
+.ps-back-btn:hover { color: var(--accent-color, #00d4ff); }
+.ps-model-badge {
+    font-size: 11px; padding: 3px 10px; border-radius: 12px;
+    background: rgba(0,212,255,0.15); color: var(--accent-color, #00d4ff);
+    margin-left: auto;
+}
+
+.ps-main {
+    max-width: 960px; margin: 0 auto; padding: 24px;
+    display: flex; flex-direction: column; gap: 28px;
+}
+
+/* ── 区域卡片 ── */
+.ps-section {
+    background: var(--bg-secondary, #1a1a2e);
+    border: 1px solid var(--border-color, #333);
+    border-radius: 10px; padding: 20px 24px;
+}
+.ps-section-header {
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px;
+}
+.ps-section-header h2 { font-size: 17px; margin: 0; }
+.ps-step-badge {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--accent-color, #00d4ff); color: #000;
+    font-weight: 700; font-size: 14px;
+}
+.ps-hint { font-size: 13px; color: var(--text-secondary, #888); }
+
+/* ── 输入框 ── */
+.ps-textarea {
+    width: 100%; box-sizing: border-box;
+    background: var(--bg-primary, #0d0d1a);
+    border: 1px solid var(--border-color, #444);
+    border-radius: 8px; color: var(--text-primary, #e0e0e0);
+    font-size: 14px; line-height: 1.6;
+    padding: 12px 14px; resize: vertical;
+    font-family: inherit; transition: border-color 0.2s;
+}
+.ps-textarea:focus {
+    outline: none; border-color: var(--accent-color, #00d4ff);
+    box-shadow: 0 0 0 2px rgba(0,212,255,0.15);
+}
+.ps-input-raw { min-height: 90px; }
+.ps-input-polished {
+    min-height: 100px; border-color: #4caf50;
+    background: rgba(76,175,80,0.04);
+}
+.ps-textarea-code {
+    font-family: 'Consolas','Monaco','Courier New',monospace;
+    font-size: 13px; line-height: 1.5;
+}
+.ps-char-count {
+    text-align: right; font-size: 12px;
+    color: var(--text-secondary, #888); margin-top: 4px;
+}
+
+/* ── 按钮 ── */
+.ps-btn {
+    padding: 9px 20px; border: none; border-radius: 8px;
+    font-size: 14px; cursor: pointer; transition: all 0.2s;
+    font-family: inherit; display: inline-flex; align-items: center; gap: 6px;
+}
+.ps-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.ps-btn-primary { background: var(--accent-color, #00d4ff); color: #000; font-weight: 600; }
+.ps-btn-primary:hover:not(:disabled) { filter: brightness(1.15); }
+.ps-btn-accent { background: #4caf50; color: #fff; font-weight: 600; }
+.ps-btn-accent:hover { background: #43a047; }
+.ps-btn-ghost {
+    background: transparent; color: var(--text-secondary, #888);
+    border: 1px solid var(--border-color, #444);
+}
+.ps-btn-ghost:hover { color: var(--text-primary, #e0e0e0); border-color: #666; }
+.ps-btn-sm { padding: 4px 12px; font-size: 12px; }
+
+/* ── 输入组 ── */
+.ps-input-group { position: relative; }
+.ps-input-group .ps-btn { margin-top: 10px; }
+
+/* ── 结果区域 ── */
+.ps-result-box { margin-top: 14px; }
+.ps-result-label {
+    font-size: 14px; font-weight: 600; margin-bottom: 8px;
+    color: #4caf50;
+}
+.ps-result-actions {
+    display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap;
+}
+.ps-convert-output { margin-top: 8px; }
+
+/* ── 参数字段 ── */
+.ps-field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 14px; }
+.ps-field label {
+    font-size: 13px; color: var(--text-secondary, #888);
+    display: flex; align-items: center; gap: 8px;
+}
+.ps-params-row {
+    display: flex; gap: 12px; flex-wrap: wrap; margin-top: 16px;
+}
+.ps-field-sm { flex: 0 0 auto; }
+.ps-field-sm input, .ps-field-sm select {
+    background: var(--bg-primary, #0d0d1a);
+    border: 1px solid var(--border-color, #444);
+    border-radius: 6px; color: var(--text-primary, #e0e0e0);
+    padding: 6px 10px; font-size: 13px; width: 90px;
+    font-family: inherit;
+}
+.ps-field-sm select { width: 110px; }
+.ps-tag-count {
+    font-size: 11px; padding: 2px 8px; border-radius: 8px;
+    background: rgba(0,212,255,0.12); color: var(--accent-color, #00d4ff);
+}
+
+/* ── 加载动画 ── */
+.ps-loading {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 14px; color: var(--accent-color, #00d4ff);
+    padding: 10px 0;
+}
+.ps-spinner {
+    display: inline-block; width: 16px; height: 16px;
+    border: 2px solid rgba(0,212,255,0.3);
+    border-top-color: var(--accent-color, #00d4ff);
+    border-radius: 50%;
+    animation: ps-spin 0.8s linear infinite;
+}
+@keyframes ps-spin { to { transform: rotate(360deg); } }
+
+/* ── 状态提示 ── */
+.ps-status { margin-top: 10px; font-size: 14px; padding: 8px 0; }
+.ps-status-loading { color: var(--accent-color, #00d4ff); }
+.ps-status-error { color: #ff5252; }
+.ps-status a { color: var(--accent-color, #00d4ff); }
+
+/* ── 历史记录 ── */
+.ps-history-list { max-height: 300px; overflow-y: auto; }
+.ps-history-item {
+    display: flex; gap: 16px; padding: 8px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    font-size: 13px; cursor: pointer; transition: background 0.15s;
+}
+.ps-history-item:hover { background: rgba(255,255,255,0.03); }
+.ps-history-time {
+    color: var(--text-secondary, #888); white-space: nowrap;
+    min-width: 140px; font-size: 12px;
+}
+.ps-history-idea {
+    color: #4caf50; overflow: hidden; text-overflow: ellipsis;
+    white-space: nowrap; max-width: 180px;
+}
+.ps-history-positive {
+    color: var(--text-primary, #e0e0e0); font-family: monospace;
+    font-size: 12px; overflow: hidden; text-overflow: ellipsis;
+    white-space: nowrap; flex: 1;
+}
+.ps-empty-hint {
+    color: var(--text-secondary, #888); font-size: 14px;
+    text-align: center; padding: 24px;
+}
+/* ── 输入模式切换标签 ── */
+.ps-input-tabs {
+    display: flex; gap: 0; margin-bottom: 12px;
+    border: 1px solid var(--border-color, #444);
+    border-radius: 8px; overflow: hidden;
+}
+.ps-tab-btn {
+    flex: 1; padding: 8px 16px; border: none; background: transparent;
+    color: var(--text-secondary, #888); font-size: 14px;
+    cursor: pointer; font-family: inherit;
+    transition: all 0.2s;
+}
+.ps-tab-btn.active {
+    background: var(--accent-color, #00d4ff); color: #000;
+    font-weight: 600;
+}
+.ps-tab-btn:not(.active):hover { color: var(--text-primary, #e0e0e0); }
+
+/* ── 图片上传区 ── */
+.ps-upload-zone {
+    display: flex; flex-direction: column; align-items: center;
+    justify-content: center; gap: 8px;
+    padding: 40px 20px; border: 2px dashed var(--border-color, #555);
+    border-radius: 10px; cursor: pointer;
+    transition: all 0.2s; min-height: 120px;
+}
+.ps-upload-zone:hover,
+.ps-upload-zone-hover {
+    border-color: var(--accent-color, #00d4ff);
+    background: rgba(0,212,255,0.05);
+}
+.ps-upload-icon {
+    font-size: 36px; color: var(--accent-color, #00d4ff);
+    line-height: 1;
+}
+.ps-upload-text {
+    font-size: 15px; color: var(--text-primary, #e0e0e0);
+}
+.ps-upload-hint {
+    font-size: 12px; color: var(--text-secondary, #666);
+}
+
+#image-preview {
+    text-align: center;
+}
+#btn-remove-image { margin-top: 8px; }
+
+/* ===== 千问模型折叠面板（主页内嵌版） ===== */
+.qwen-panel {
+  margin-bottom: 12px;
+  border: 1px solid var(--border-color, #333);
+  border-radius: 8px;
+  background: var(--bg-secondary, #1a1a2e);
+  overflow: hidden;
+  transition: box-shadow 0.3s;
+}
+.qwen-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary, #e0e0e0);
+  background: linear-gradient(135deg, rgba(0,212,255,0.08), transparent);
+  border-bottom: 1px solid transparent;
+  transition: background 0.2s;
+}
+.qwen-panel-header:hover {
+  background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(0,212,255,0.03));
+  border-bottom-color: var(--border-color, #333);
+}
+.qwen-panel-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--accent-color, #00d4ff);
+  color: #000;
+  font-weight: 700;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+.qwen-panel-arrow {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--text-secondary, #888);
+  transition: transform 0.2s;
+}
+.qwen-panel-body {
+  padding: 12px 14px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease, padding 0.35s ease;
+}
+.qwen-panel-body.expanded {
+  max-height: 800px;
+  padding: 12px 14px;
+}
+.qwen-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--bg-primary, #0d0d1a);
+  border: 1px solid var(--border-color, #444);
+  border-radius: 6px;
+  color: var(--text-primary, #e0e0e0);
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 8px 10px;
+  resize: vertical;
+  font-family: inherit;
+}
+.qwen-textarea:focus {
+  outline: none;
+  border-color: var(--accent-color, #00d4ff);
+}
+.qwen-textarea-polished {
+  border-color: #4caf50;
+  background: rgba(76,175,80,0.04);
+}
+.qwen-textarea-code {
+  font-family: "Consolas","Monaco","Courier New",monospace;
+  font-size: 12px;
+}
+.qwen-char-count {
+  text-align: right;
+  font-size: 11px;
+  color: var(--text-secondary, #888);
+  margin-top: 2px;
+  margin-bottom: 6px;
+}
+.qwen-btn {
+  padding: 7px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: inherit;
+}
+.qwen-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.qwen-btn-primary {
+  background: var(--accent-color, #00d4ff);
+  color: #000;
+  font-weight: 600;
+}
+.qwen-btn-primary:hover:not(:disabled) {
+  filter: brightness(1.15);
+}
+.qwen-btn-accent {
+  background: #4caf50;
+  color: #fff;
+  font-weight: 600;
+}
+.qwen-btn-accent:hover {
+  background: #43a047;
+}
+.qwen-btn-ghost {
+  background: transparent;
+  color: var(--text-secondary, #888);
+  border: 1px solid var(--border-color, #444);
+}
+.qwen-btn-ghost:hover {
+  color: var(--text-primary, #e0e0e0);
+  border-color: #666;
+}
+.qwen-result-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #4caf50;
+  margin-bottom: 6px;
+}
+.qwen-loading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--accent-color, #00d4ff);
+  padding: 6px 0;
+}
+.qwen-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(0,212,255,0.3);
+  border-top-color: var(--accent-color, #00d4ff);
+  border-radius: 50%;
+  animation: qwen-spin 0.8s linear infinite;
+}
+@keyframes qwen-spin {
+  to { transform: rotate(360deg); }
+}
+.qwen-field {
+  margin-bottom: 10px;
+}
+.qwen-field label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-secondary, #888);
+  margin-bottom: 4px;
+}
+.qwen-tag-badge {
+  font-size: 10px;
+  padding: 1px 7px;
+  border-radius: 8px;
+  background: rgba(0,212,255,0.12);
+  color: var(--accent-color, #00d4ff);
+}
+.qwen-params-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.qwen-field-sm {
+  flex: 0 0 auto;
+}
+.qwen-field-sm label {
+  font-size: 11px;
+  margin-bottom: 2px;
+}
+.qwen-field-sm input {
+  background: var(--bg-primary, #0d0d1a);
+  border: 1px solid var(--border-color, #444);
+  border-radius: 4px;
+  color: var(--text-primary, #e0e0e0);
+  padding: 4px 7px;
+  font-size: 12px;
+  width: 75px;
+  font-family: inherit;
+}
+
+
+/* ===== 按钮微交互 ===== */
+.qwen-btn {
+  transition: all 0.2s ease;
+}
+.qwen-btn:active:not(:disabled) {
+  transform: scale(0.97);
+}
+.qwen-panel-header:active {
+  opacity: 0.85;
+}
+
+/* ===== 快捷按钮 hover 发光 ===== */
+#qwen-quick-btn:hover {
+  background: linear-gradient(135deg, rgba(0,212,255,0.25), rgba(0,212,255,0.1)) !important;
+  box-shadow: 0 0 8px rgba(0,212,255,0.3);
+}
+
+/* ===== 结果区域滑入动画 ===== */
+#qwen-polish-result,
+#qwen-convert-result {
+  animation: qwen-fadeIn 0.3s ease;
+}
+@keyframes qwen-fadeIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== 输入框字数统计颜色变化 ===== */
+.qwen-char-count.near-limit {
+  color: #ff9800;
+}
+.qwen-char-count.at-limit {
+  color: #ff5252;
+}
+
+/* ===== 结果标签图标 ===== */
+.qwen-result-label::before {
+  content: "¹4  ";
+}

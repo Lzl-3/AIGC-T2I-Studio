@@ -1,0 +1,6 @@
+{
+  "type": "prop",
+  "title": "**长剑**",
+  "positive_template": "White background, single object focus.  A stylized longsword from \"Eternal劫\", highly detailed.  Blade made of dark blue forged steel with dragon etchings, metallic texture.  Golden inlays along the edges, sharp and reflective.  Handle wrapped in crimson silk, with a jade dragon head pommel.  Shadowless lighting, front view, clean edges.  AAA game asset quality, sharp focus, photorealistic rendering.  No background elements, isolated object.",
+  "negative_prompt": "-no background, -no characters, -no environment, -no effects (fire, light trails),  -no text, -no watermarks, -low resolution, -grainy, -blurred, -distorted,  -no reflections other than blade, -multiple objects, -clutter."
+}

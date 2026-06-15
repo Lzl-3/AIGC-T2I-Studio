@@ -1,0 +1,157 @@
+{
+  "3": {
+    "inputs": {
+      "seed": 312956306109714,
+      "steps": 5,
+      "cfg": 1,
+      "sampler_name": "lcm",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": [
+        "48",
+        0
+      ],
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "latent_image": [
+        "40",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "K采样器"
+    }
+  },
+  "6": {
+    "inputs": {
+      "text": "镜头以动态的过肩视角，展现了一位厨师在熙熙攘攘的厨房中一丝不苟地摆盘。这位中年男子留着精心修剪的胡须，神情专注，熟练地将食材摆放在洁白的盘子上。他的双手动作精准，每一个动作都经过深思熟虑，显得娴熟娴熟。背景是拥挤的厨房，热气腾腾的锅碗瓢盆、嗡嗡作响的搅拌机和叮当作响的厨具。明亮的灯光照亮了整个场景，在繁忙的工作区投下斑驳的光影。镜头从背后捕捉到厨师细致入微的工作，突显了他的技艺和专注。",
+      "clip": [
+        "38",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Positive Prompt)"
+    }
+  },
+  "7": {
+    "inputs": {
+      "text": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走，裸体，裸露， nudity，nsfw，色情，淫秽，性暗示，露骨，乳沟，乳头，生殖器，内衣，透视装，透明衣服，湿身，湿衣服，裙底风光，走光，内裤视角，捆绑，恋物，情色，里番，真人实拍，写实，照片级真实，真人，摄影作品，3d渲染，电脑生成图像，cgi，塑料皮肤，娃娃感，低质量，最差质量，模糊，噪点，颗粒感，jpeg伪影，扭曲，变形，人体结构错误，坏手，缺手指，多余肢体，变异，丑陋，毁容，画面闪烁，不稳定，形变，帧不一致，文字，水印，签名，logo",
+      "clip": [
+        "38",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Negative Prompt)"
+    }
+  },
+  "8": {
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "39",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE解码"
+    }
+  },
+  "37": {
+    "inputs": {
+      "unet_name": "self_forcing_dmd.pt",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "UNet加载器"
+    }
+  },
+  "38": {
+    "inputs": {
+      "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "type": "wan",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "加载CLIP"
+    }
+  },
+  "39": {
+    "inputs": {
+      "vae_name": "wan_2.1_vae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "加载VAE"
+    }
+  },
+  "40": {
+    "inputs": {
+      "width": 640,
+      "height": 368,
+      "length": 85,
+      "batch_size": 1
+    },
+    "class_type": "EmptyHunyuanLatentVideo",
+    "_meta": {
+      "title": "空Latent视频（Hunyuan）"
+    }
+  },
+  "48": {
+    "inputs": {
+      "shift": 8,
+      "model": [
+        "37",
+        0
+      ]
+    },
+    "class_type": "ModelSamplingSD3",
+    "_meta": {
+      "title": "采样算法（SD3）"
+    }
+  },
+  "49": {
+    "inputs": {
+      "fps": 12,
+      "images": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "CreateVideo",
+    "_meta": {
+      "title": "创建视频"
+    }
+  },
+  "50": {
+    "inputs": {
+      "filename_prefix": "video/ComfyUI",
+      "format": "auto",
+      "codec": "auto",
+      "video": [
+        "49",
+        0
+      ]
+    },
+    "class_type": "SaveVideo",
+    "_meta": {
+      "title": "保存视频"
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "type": "prop",
+  "title": "**古卷卷轴**",
+  "positive_template": "White background, centered ancient scroll.  Yellowed parchment texture, frayed edges.  Intricate seal imprint in the center, red ink with phoenix emblem.  Hieroglyphic symbols inscribed in gold paint, fading edges.  Tight crop, floating in mid-air, no shadows.  Soft ambient lighting, no highlights, matte finish.  4K resolution, crispy details, museum artifact realism.",
+  "negative_prompt": "-no hands holding it, -no scrolls nearby, -no writing inside the scroll,  -no creases/folds, -no environmental elements (dirt, dust), -no transparency,  -no glow effects, -no reflections, -pure white BG only."
+}

@@ -1,0 +1,70 @@
+{
+  "1": {
+    "inputs": {
+      "text": "",
+      "UNET": "flux-2-klein-base-9b-fp8.safetensors",
+      "CLIP_1": "gemma_3_12B_it_fp4_mixed.safetensors",
+      "CLIP_2": "Default",
+      "CLIP_Device": "cuda:0",
+      "CLIP_AttentionMultiply": true,
+      "VAE": "flux2-vae.safetensors",
+      "VAE_Device": "cuda:0",
+      "Weight_Dtype": "default",
+      "Latent_Ratio": "16:9 [1344x768 landscape]",
+      "Latent_Width": 1344,
+      "Latent_Height": 768,
+      "Batch_Size": 1
+    },
+    "class_type": "FluxStartSettings",
+    "_meta": {
+      "title": "Flux Start Settings - Scene"
+    }
+  },
+  "2": {
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "conditioning": [
+        "1",
+        5
+      ],
+      "latent": [
+        "1",
+        2
+      ],
+      "seed": 0,
+      "sampler": "euler",
+      "scheduler": "simple",
+      "steps": "28",
+      "guidance": "3.5",
+      "max_shift": "",
+      "base_shift": "",
+      "denoise": "1.0",
+      "use_teacache": false,
+      "vae": [
+        "1",
+        6
+      ],
+      "decode_image": true
+    },
+    "class_type": "Fluxstarsampler",
+    "_meta": {
+      "title": "Flux Star Sampler"
+    }
+  },
+  "3": {
+    "inputs": {
+      "images": [
+        "2",
+        4
+      ],
+      "filename_prefix": "scene"
+    },
+    "class_type": "SaveImage",
+    "_meta": {
+      "title": "Save Image"
+    }
+  }
+}

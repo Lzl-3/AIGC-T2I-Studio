@@ -1,0 +1,6 @@
+{
+  "type": "makeup",
+  "title": "莲花清透妆",
+  "positive_template": "close-up portrait of a {character} person with lotus petal shaped pink eyeshadow, translucent glowing skin, soft pink gradient lips, natural straight eyebrows, pearl highlight on cheekbones, pure elegant chinese makeup, detailed face, {face_shape}, {hairstyle}, wearing {clothing}, {expression}, {background}, {lighting}, {quality}",
+  "negative_prompt": "worst quality, low quality, lowres, blurry, bad anatomy, extra fingers, missing fingers, fused fingers, too many fingers, watermark, text, logo, signature, username, distorted face, ugly face, deformed face, bad face, nsfw, nude, naked, cropped, out of frame, specific person, celebrity, famous face, same face, dark atmosphere, battle damage, blood, magic glow, complex background, messy composition"
+}

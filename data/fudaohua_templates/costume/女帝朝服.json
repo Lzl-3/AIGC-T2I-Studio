@@ -1,0 +1,6 @@
+{
+  "type": "costume",
+  "title": "女帝朝服",
+  "positive_template": "golden imperial robe, dragon embroidery, phoenix crown, red silk lining, ornate gold trim, majestic court dress, high detail imperial chinese clothing on {character}, {hairstyle}, {makeup}, {action}, {prop}, {background}, {angle}, {lighting}, {quality}",
+  "negative_prompt": "worst quality, low quality, lowres, blurry, bad anatomy, extra fingers, missing fingers, fused fingers, too many fingers, watermark, text, logo, signature, username, distorted face, ugly face, deformed face, bad face, nsfw, nude, naked, cropped, out of frame, specific person, celebrity, famous face, same face, dark atmosphere, battle damage, blood, magic glow, complex background, messy composition"
+}

@@ -1,0 +1,11 @@
+{
+  "name": "青年",
+  "positive": "(masterpiece:1.3),\n(best quality:1.3),\n(highly detailed:1.2),\n\nsemi realistic cg,\n3d character render,\ngame cinematic,\n\nyoung chinese male,\n25 years old,\n\nidentity anchor,\n\noval face,\ndefined jawline,\nhigh cheekbones,\n\ndeep brown almond eyes,\nslightly narrow eyes,\n\nstraight nose bridge,\nthin lips,\n\nthick dark eyebrows,\nslightly arched eyebrows,\n\nfair skin,\nclear skin texture,\n\nlong black hair,\nhalf tied hair,\nflowing hair,\n\ncalm expression,\ngentle expression,\n\nslim athletic build,\nnine head body proportion,\n\nxianxia cultivator,\nimmortal swordsman,\n\nwhite robe,\nsilver embroidery,\njade belt,\njade hairpin,\n\nstanding,\n\nancient chinese fantasy world,\n\nmist,\nfloating particles,\n\ncinematic lighting,\nvolumetric light,\n\ndepth of field,\n\nunreal engine,\noctane render,\nhigh end cg",
+  "negative": "photorealistic,\nreal photo,\n\nanime,\ncartoon,\nchibi,\n\nold man,\nelderly,\n\nfemale,\nwoman,\ngirl,\n\nchild,\n\nround face,\nfat face,\n\nbig nose,\nwide nose,\n\nsmall eyes,\n\ncross eyed,\n\ndeformed eyes,\n\nugly face,\n\nextra fingers,\nmissing fingers,\n\nbad hands,\n\nbad anatomy,\n\nmutation,\n\nduplicate,\n\nblurry,\n\nlow quality,\n\nwatermark,\ntext,\nlogo",
+  "metadata": {
+    "gender": "男",
+    "age": "青年",
+    "height": "185",
+    "created_at": "2026-06-14T20:27:38.643853"
+  }
+}

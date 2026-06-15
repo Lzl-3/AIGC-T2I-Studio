@@ -1,0 +1,6 @@
+{
+  "type": "prop",
+  "title": "**护甲胸甲**",
+  "positive_template": "Isolated on white, eternal劫-inspired chest armor.  Elaborate pauldron with demonic horns, dark bronze metal.  Red gemstone embedded in center, emitting faint glow.  Decorated with dragon scale patterns, weathered look.  Highly polished surface, reflections like water ripples.  Close-up view, no perspective distortion, clean lines.  Ultra-detailed textures, PBR material quality.",
+  "negative_prompt": "-no background textures, -no straps or additional armor parts,  -no character wearing it, -no dirt/scratches (unless specified in positive),  -no lighting effects, -no bokeh, -no depth of field, -flat lighting only."
+}

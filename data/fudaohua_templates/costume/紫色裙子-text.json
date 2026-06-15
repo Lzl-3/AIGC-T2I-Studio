@@ -1,0 +1,6 @@
+{
+  "type": "costume",
+  "title": "紫色裙子-text",
+  "positive_template": "A flat lay photography of a magnificent purple Chinese Hanfu dress, no model.Rich royal purple and violet tones. Luxurious texture, high-quality fabric details.Deep V-neck with intricate gold cloud embroidery on the collar. Wide sheer organza lantern sleeves, translucent and airy. A wide shiny metallic gold waist sash with a red knot. Voluminous layered tulle skirt with subtle tone-on-tone jacquard patterns, shimmering silk texture.Pure white background, soft studio lighting to highlight the fabric weave and sheen, 8k resolution, photorealistic product shot.",
+  "negative_prompt": "people, person, model, wearing, messy background, low quality, blurry, dull colors, flat lighting (avoiding flat lighting helps emphasize texture)."
+}

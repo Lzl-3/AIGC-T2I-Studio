@@ -1,0 +1,247 @@
+{
+  "3": {
+    "inputs": {
+      "seed": 776032922539604,
+      "steps": 5,
+      "cfg": 1,
+      "sampler_name": "lcm",
+      "scheduler": "simple",
+      "denoise": 1,
+      "model": [
+        "48",
+        0
+      ],
+      "positive": [
+        "6",
+        0
+      ],
+      "negative": [
+        "7",
+        0
+      ],
+      "latent_image": [
+        "40",
+        0
+      ]
+    },
+    "class_type": "KSampler",
+    "_meta": {
+      "title": "K采样器"
+    }
+  },
+  "6": {
+    "inputs": {
+      "text": "杰作，顶级画质，写实风格，顶级古风，CG精细质感，PBR物理级渲染，4K超高清，极致细节，电影级柔光， 色彩鲜艳，精致的人物设计，美丽的光影，画面层次分明，景深突出，色彩清新通透，高对比度光影\n\n展现古代皇城夜晚繁荣全景。人来人往的青楼门口。年轻女子手持红缨枪，枪尖缭绕着血红色的灵力微光，嘴角勾起一抹冷笑，青年男子长相俊俏手持宝剑与女子对峙，眼神凝重如冰，肩甲在月光下泛着冷光。\n镜头：高空鸟瞰向下运镜转到面部特写。",
+      "clip": [
+        "38",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Positive Prompt)"
+    }
+  },
+  "7": {
+    "inputs": {
+      "text": "色调艳丽，过曝，静态，细节模糊不清，字幕，风格，作品，画作，画面，静止，整体发灰，最差质量，低质量，JPEG压缩残留，丑陋的，残缺的，多余的手指，画得不好的手部，画得不好的脸部，畸形的，毁容的，形态畸形的肢体，手指融合，静止不动的画面，杂乱的背景，三条腿，背景人很多，倒着走，裸体，裸露， nudity，nsfw，色情，淫秽，性暗示，露骨，乳沟，乳头，生殖器，内衣，透视装，透明衣服，湿身，湿衣服，裙底风光，走光，内裤视角，捆绑，恋物，情色，里番，真人实拍，写实，照片级真实，真人，摄影作品，3d渲染，电脑生成图像，cgi，塑料皮肤，娃娃感，低质量，最差质量，模糊，噪点，颗粒感，jpeg伪影，扭曲，变形，人体结构错误，坏手，缺手指，多余肢体，变异，丑陋，毁容，画面闪烁，不稳定，形变，帧不一致，文字，水印，签名，logo",
+      "clip": [
+        "38",
+        0
+      ]
+    },
+    "class_type": "CLIPTextEncode",
+    "_meta": {
+      "title": "CLIP Text Encode (Negative Prompt)"
+    }
+  },
+  "8": {
+    "inputs": {
+      "samples": [
+        "3",
+        0
+      ],
+      "vae": [
+        "39",
+        0
+      ]
+    },
+    "class_type": "VAEDecode",
+    "_meta": {
+      "title": "VAE解码"
+    }
+  },
+  "37": {
+    "inputs": {
+      "unet_name": "self_forcing_dmd.pt",
+      "weight_dtype": "default"
+    },
+    "class_type": "UNETLoader",
+    "_meta": {
+      "title": "UNet加载器"
+    }
+  },
+  "38": {
+    "inputs": {
+      "clip_name": "umt5_xxl_fp8_e4m3fn_scaled.safetensors",
+      "type": "wan",
+      "device": "default"
+    },
+    "class_type": "CLIPLoader",
+    "_meta": {
+      "title": "加载CLIP"
+    }
+  },
+  "39": {
+    "inputs": {
+      "vae_name": "wan_2.1_vae.safetensors"
+    },
+    "class_type": "VAELoader",
+    "_meta": {
+      "title": "加载VAE"
+    }
+  },
+  "40": {
+    "inputs": {
+      "width": 832,
+      "height": 480,
+      "length": 97,
+      "batch_size": 1
+    },
+    "class_type": "EmptyHunyuanLatentVideo",
+    "_meta": {
+      "title": "空Latent视频（Hunyuan）"
+    }
+  },
+  "48": {
+    "inputs": {
+      "shift": 8,
+      "model": [
+        "37",
+        0
+      ]
+    },
+    "class_type": "ModelSamplingSD3",
+    "_meta": {
+      "title": "采样算法（SD3）"
+    }
+  },
+  "49": {
+    "inputs": {
+      "fps": 16,
+      "images": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "CreateVideo",
+    "_meta": {
+      "title": "RAW preview video (before upscale/interp)"
+    }
+  },
+  "50": {
+    "inputs": {
+      "filename_prefix": "video/ComfyUI",
+      "format": "mp4",
+      "codec": "h264",
+      "video": [
+        "49",
+        0
+      ]
+    },
+    "class_type": "SaveVideo",
+    "_meta": {
+      "title": "RAW preview save (optional)"
+    }
+  },
+  "51": {
+    "inputs": {
+      "ckpt_name": "rife49.pth",
+      "clear_cache_after_n_frames": 10,
+      "multiplier": 2,
+      "fast_mode": true,
+      "ensemble": true,
+      "scale_factor": 1,
+      "dtype": "float32",
+      "torch_compile": false,
+      "batch_size": 1,
+      "frames": [
+        "8",
+        0
+      ]
+    },
+    "class_type": "RIFE VFI",
+    "_meta": {
+      "title": "插帧 RIFE：16fps -> 约32fps，再按30fps输出"
+    }
+  },
+  "52": {
+    "inputs": {
+      "model_name": "4x-UltraSharp.pth"
+    },
+    "class_type": "UpscaleModelLoader",
+    "_meta": {
+      "title": "超分模型加载"
+    }
+  },
+  "53": {
+    "inputs": {
+      "upscale_model": [
+        "52",
+        0
+      ],
+      "image": [
+        "51",
+        0
+      ]
+    },
+    "class_type": "ImageUpscaleWithModel",
+    "_meta": {
+      "title": "逐帧 AI 超分 4x"
+    }
+  },
+  "54": {
+    "inputs": {
+      "upscale_method": "lanczos",
+      "width": 1920,
+      "height": 1080,
+      "crop": "center",
+      "image": [
+        "53",
+        0
+      ]
+    },
+    "class_type": "ImageScale",
+    "_meta": {
+      "title": "统一为 YouTube 1080p 16:9"
+    }
+  },
+  "55": {
+    "inputs": {
+      "fps": 30,
+      "images": [
+        "54",
+        0
+      ]
+    },
+    "class_type": "CreateVideo",
+    "_meta": {
+      "title": "创建 YouTube 1080p30 视频"
+    }
+  },
+  "56": {
+    "inputs": {
+      "filename_prefix": "video/Wan21_YouTube_1080p30_upscaled_rife",
+      "format": "mp4",
+      "codec": "h264",
+      "video": [
+        "55",
+        0
+      ]
+    },
+    "class_type": "SaveVideo",
+    "_meta": {
+      "title": "保存 YouTube 上传版 / 推流源视频"
+    }
+  }
+}

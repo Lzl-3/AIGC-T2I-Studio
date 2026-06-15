@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIGC T2I Studio</title>
+<link rel="stylesheet" href="/static/css/dark-theme.css">
+<link rel="stylesheet" href="/static/css/prompt-studio.css">
+</head>
+<body>
+<div class="header">
+  <h1>AIGC T2I Studio</h1>
+  <a href="/" class="header-link-btn" id="header-training-link" style="display:none;">训练素材</a>
+  <div><span id="comfyui-status" class="comfyui-status offline">检测中...</span></div>
+</div>
+
+<div id="comfyui-offline-banner" style="display:none;background:#ff6b35;color:#000;text-align:center;padding:8px;font-size:14px;font-weight:600;">
+  ComfyUI 未连接 — 图片生成功能暂不可用，请启动 ComfyUI 服务后刷新页面
+</div>
+
+<div class="app-container">
+  <div class="sidebar">
+    <button class="sidebar-btn active" id="tab-character" title="角色">角色</button>
+    <button class="sidebar-btn" id="tab-scene" title="场景">场景</button>
+    <button class="sidebar-btn" id="tab-costume" title="服装道具">道具</button>
+    <button class="sidebar-btn" id="tab-img2img" title="图生图">图生图</button>
+    <button class="sidebar-btn" id="tab-cards" title="工作流卡片">卡片</button>
+    <button class="sidebar-btn" id="tab-free" title="自由模式">自由</button>
+                            <button class="sidebar-btn" id="tab-scene-material" title="场景训练">场景训练</button>
+            <button class="sidebar-btn" id="tab-material-studio" title="人物训练">人物</button>
+            <button class="sidebar-btn" id="tab-costume-studio" title="服道化素材">✨ 服道化</button>
+            <button class="sidebar-btn" id="tab-tagger" title="WD14">打标</button>
+    </div>
+  <div class="main-content">
+    <div class="panel-left">
+      
+      <!-- ===== 风格标签选择器（可折叠） ===== -->
+      <div id="common-form-area">
+
+
+      <div class="style-palette-wrapper" id="style-palette-wrapper">
+        <div class="sp-header" onclick="document.getElementById('style-palette').classList.toggle('collapsed');this.querySelector('.sp-toggle').textContent=document.getElementById('style-palette').classList.contains('collapsed')?'+':'-'">
+          <span>风格标签</span>
+          <span class="sp-toggle">-</span>
+        </div>
+        <div id="style-palette" class="">
+          <div style="padding:8px;color:var(--text-muted);font-size:12px;">加载中...</div>
+        </div>
+      </div>
+<div class="form-group"><label>题材</label><select id="genre"><option value="xianxia">玄幻修仙</option><option value="urban">都市爱情</option><option value="transmigration">穿越重生</option><option value="historical">古代历史</option><option value="modern_era">近现代</option><option value="supernatural">悬疑灵异</option><option value="sci_fi">末世科幻</option><option value="esports">游戏电竞</option></select></div>
+      <div class="form-group"><label>底模</label><select id="model-name"><option value="">加载中...</option></select></div>
+      <div class="form-group"><label>项目名称</label><input type="text" id="project-name" placeholder="输入项目名称"></div>
+      <div class="form-row"><div class="form-group"><label>图片宽度</label><input type="number" id="img-width" value="1216" min="64" max="4096"></div><div class="form-group"><label>图片高度</label><input type="number" id="img-height" value="832" min="64" max="4096"></div></div>
+      <div class="advanced-params-wrapper">
+        <div class="sp-header" onclick="var el=document.getElementById('advanced-params');el.style.display=el.style.display==='none'?'block':'none';this.querySelector('.sp-toggle').textContent=el.style.display==='none'?'+':'-'">
+          <span>高级参数</span>
+          <span class="sp-toggle">-</span>
+        </div>
+        <div id="advanced-params"><div class="form-row"><div class="form-group"><label>采样步数</label><input type="number" id="img-steps" value="40" min="1" max="100"></div><div class="form-group"><label>CFG</label><input type="number" id="img-cfg" value="7.0" min="1.0" max="30.0" step="0.5"></div></div>
+      <div class="form-group"><label>采样器 / 调度器</label><div class="form-row"><select id="img-sampler" style="flex:1;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:13px;"><option value="">默认</option><option value="euler">Euler</option><option value="euler_ancestral">Euler a</option><option value="dpmpp_2m">DPM++ 2M</option><option value="dpmpp_2m_sde">DPM++ 2M SDE</option><option value="dpmpp_sde">DPM++ SDE</option><option value="dpm_2">DPM2</option><option value="dpm_2_ancestral">DPM2 a</option><option value="heun">Heun</option><option value="ddim">DDIM</option></select><select id="img-scheduler" style="flex:1;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:13px;"><option value="">默认</option><option value="normal">Normal</option><option value="karras">Karras</option><option value="exponential">Exponential</option><option value="sgm_uniform">SGM Uniform</option><option value="simple">Simple</option><option value="ddim_uniform">DDIM Uniform</option></select></div></div>
+      </div></div>
+<div class="form-group"><label>光照</label><select id="lighting"><option value="natural_light">自然光</option><option value="golden_hour">黄金时刻</option><option value="studio_light">影棚光</option><option value="moonlight">月光</option><option value="dramatic_lighting">戏剧光</option></select></div>
+      <div class="form-group"><label>随机种子</label><div class="radio-group"><div class="radio-item selected" data-value="random">随机</div><div class="radio-item" data-value="fixed">固定</div></div><input type="number" id="seed-value" placeholder="输入种子值" style="margin-top:8px;width:100%;padding:6px 10px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:13px;"></div>
+      <hr style="border:none;border-top:1px solid var(--border);margin:16px 0;">
+      </div>
+      <div id="params-character">
+        <div class="form-group"><label>角色名称</label><select id="role-name"><option value="">-- 自由角色 --</option></select><input type="text" id="role-name-custom" placeholder="输入自定义角色名..." style="display:none;margin-top:8px;width:100%;padding:6px 10px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:13px;"></div>
+        <div class="form-group" id="preset-info" style="display:none;"><label>预设详情</label><div id="preset-info-content" style="font-size:12px;color:var(--text-secondary);line-height:1.6;padding:8px;background:var(--bg-card);border-radius:var(--radius-sm);margin-top:4px;"></div></div>
+        <div class="form-group"><label>构图</label><select id="composition"><option value="full_body">全身站立</option><option value="half_body">半身像</option><option value="portrait">肖像</option><option value="close_up">特写</option></select></div>
+        <div class="form-group"><label>角色类型</label><select id="character-gender" style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:13px;"><option value="female">女性</option><option value="male">男性</option><option value="elder_male">老年男性</option><option value="elder_female">老年女性</option><option value="young_female">少女</option><option value="young_male">少年</option><option value="monster">妖怪/魔族</option><option value="mythical_beast">神兽/灵兽</option></select></div>
+        <div class="form-group"><label>角色三视图</label><div id="sheet-mode-toggle" style="display:inline-flex;padding:6px 14px;cursor:pointer;align-items:center;gap:8px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-secondary);font-size:13px;user-select:none;" onclick="this.classList.toggle('checked')"><span>生成三视图（正面/侧面/背面/斜侧）</span></div></div>
+        <div class="form-group"><label>角度</label><div class="checkbox-group" id="angle-group"></div></div>
+        <div class="form-group"><label>表情</label><div class="checkbox-group" id="expression-group"></div></div>
+      </div>
+      <div id="params-scene" style="display:none;">
+        <div class="form-group"><label>场景类型</label><input type="text" id="scene-type" placeholder="如：仙山宗门"></div>
+        <div class="form-group"><label>时间</label><select id="scene-time"><option value="day">白天</option><option value="sunset">黄昏</option><option value="night">夜晚</option><option value="dawn">黎明</option></select></div>
+        <div class="form-group"><label>氛围</label><select id="scene-atmosphere"><option value="peaceful">宁静</option><option value="mysterious">神秘</option><option value="dramatic">戏剧</option><option value="melancholy">忧伤</option><option value="lively">热闹</option></select></div>
+      </div>
+      <div id="params-costume" style="display:none;">
+        <div class="form-group"><label>物品类型</label><input type="text" id="item-type" placeholder="如：长剑"></div>
+        <div class="form-group"><label>材质</label><select id="item-material"><option value="crystal">水晶</option><option value="metal">金属</option><option value="wood">木质</option><option value="fabric">织物</option><option value="jade">玉石</option><option value="paper">纸质</option></select></div>
+        <div class="form-group"><label>风格</label><select id="item-style"><option value="ancient_chinese">古风</option><option value="modern">现代</option><option value="fantasy">奇幻</option><option value="retro">复古</option><option value="minimalist">极简</option></select></div>
+      </div>
+      <div id="params-img2img" style="display:none;">
+        <div class="form-group"><label>上传参考图</label><div class="upload-zone" id="img2img-dropzone"><div id="img2img-preview" style="display:none;text-align:center;"></div><div id="img2img-placeholder">拖拽图片到此处 或 点击上传<br><small>支持 PNG / JPG / WebP</small></div><input type="file" id="img2img-file-input" accept="image/png,image/jpeg,image/webp" style="display:none;"></div></div>
+        <div class="form-group"><label>期望输出描述</label><input type="text" id="img2img-prompt" placeholder="描述你希望生成的内容，例如：古风女子、太空飞船..." style="width:100%;"></div>
+         <div class="form-group"><label>降噪强度</label><input type="range" id="denoising-strength" min="0" max="1" step="0.05" value="0.4" style="width:100%;"><span id="denoising-value" style="font-size:12px;color:var(--text-secondary);">0.40</span></div>
+      </div>
+      <!-- Card Management Panel -->
+      <div id="params-history" style="display:none;">
+      <div id="history-list" style="max-height:400px;overflow-y:auto;"></div>
+    </div>
+    <div id="params-cards" style="display:none;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+          <span style="font-size:14px;font-weight:600;color:var(--text-secondary);">工作流卡片</span>
+          <button class="btn btn-sm" id="btn-new-card" style="padding:4px 12px;font-size:12px;">+ 新建卡片</button>
+        </div>
+        <div class="card-grid" id="card-grid">
+          <div class="empty-state">暂无卡片，点击"+ 新建卡片"创建</div>
+        </div>
+      </div>
+
+      <!-- Card Editor Modal -->
+      <div class="modal-overlay" id="card-editor-modal">
+        <div class="card-editor" style="max-width:600px;max-height:85vh;overflow-y:auto;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <h3 style="font-size:16px;color:var(--accent);">编辑工作流卡片</h3>
+            <button class="modal-close" id="card-editor-close">&times;</button>
+          </div>
+          <input type="hidden" id="card-editor-id">
+          <div class="form-group"><label>卡片名称</label><input type="text" id="card-name" placeholder="如：RealVis XL 角色生成"></div>
+          <div class="form-group"><label>描述</label><input type="text" id="card-desc" placeholder="卡片用途说明"></div>
+          <div class="form-row">
+            <div class="form-group"><label>类别</label><select id="card-category"><option value="character">角色</option><option value="scene">场景</option><option value="costume">服装道具</option><option value="img2img">图生图</option></select></div>
+            <div class="form-group"><label>状态</label><select id="card-status"><option value="draft">草稿</option><option value="testing">测试中</option></select></div>
+          </div>
+          <hr style="border:none;border-top:1px solid var(--border);margin:12px 0;">
+          <div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:8px;">模型选择</div>
+          <div class="form-group"><label>基模 (Checkpoint)</label><select id="card-checkpoint"><option value="">不指定</option></select></div>
+          <div class="form-group"><label>VAE</label><select id="card-vae"><option value="">使用基模内置 VAE</option></select></div>
+          <div class="form-group"><label>CLIP 模型</label><select id="card-clip"><option value="">使用基模内置 CLIP</option></select></div>
+          <hr style="border:none;border-top:1px solid var(--border);margin:12px 0;">
+          <div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:8px;">默认参数</div>
+          <div class="form-row"><div class="form-group"><label>宽度</label><input type="number" id="card-width" value="1024"></div><div class="form-group"><label>高度</label><input type="number" id="card-height" value="1024"></div></div>
+          <div class="form-row"><div class="form-group"><label>步数</label><input type="number" id="card-steps" value="40"></div><div class="form-group"><label>CFG</label><input type="number" id="card-cfg" value="7.0" step="0.5"></div></div>
+          <div class="form-row"><div class="form-group"><label>采样器</label><select id="card-sampler"><option value="">默认</option><option value="euler">Euler</option><option value="euler_ancestral">Euler a</option><option value="dpmpp_2m">DPM++ 2M</option><option value="dpmpp_sde">DPM++ SDE</option><option value="ddim">DDIM</option></select></div><div class="form-group"><label>调度器</label><select id="card-scheduler"><option value="">默认</option><option value="normal">Normal</option><option value="karras">Karras</option><option value="exponential">Exponential</option><option value="simple">Simple</option></select></div></div>
+          <hr style="border:none;border-top:1px solid var(--border);margin:12px 0;">
+          <div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:8px;">提示词模板</div>
+          <div class="form-group"><label>正向前缀（自动加在 prompt 前）</label><textarea id="card-positive-prefix" rows="2" placeholder="masterpiece, best quality" style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:12px;resize:vertical;"></textarea></div>
+          <div class="form-group"><label>负向前缀</label><textarea id="card-negative-prefix" rows="2" placeholder="lowres, bad anatomy" style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:12px;resize:vertical;"></textarea></div>
+          <div class="form-group"><label>验图备注</label><textarea id="card-notes" rows="2" placeholder="验图意见..." style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:12px;resize:vertical;"></textarea></div>
+          <div style="display:flex;gap:8px;margin-top:16px;">
+            <button class="btn btn-primary" id="btn-save-card" style="flex:1;">保存卡片</button>
+            <button class="btn btn-warning" id="btn-lock-card" style="flex:1;">锁定卡片</button>
+          </div>
+        </div>
+      </div>
+
+<div id="params-free" style="display:none;">
+        <div class="form-group"><label>正向提示词</label><textarea id="free-positive" rows="4" placeholder="输入自定义正向提示词..." style="width:100%;padding:8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:13px;resize:vertical;"></textarea></div>
+        <div class="form-group"><label>负向提示词</label><textarea id="free-negative" rows="3" placeholder="输入自定义负向提示词..." style="width:100%;padding:8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:13px;resize:vertical;"></textarea></div>
+        <hr style="border:none;border-top:1px solid var(--border);margin:16px 0;">
+        <div class="form-group"><label>选择已保存角色</label><select id="free-char-select" style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:13px;"><option value="">-- 不使用角色配置 --</option></select></div>
+        <div class="form-group"><label>创建新角色</label><div style="display:flex;gap:6px;flex-wrap:wrap;">
+  <input type="text" id="free-char-name" placeholder="角色名称..." style="flex:1;min-width:120px;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:13px;">
+  <select id="free-char-gender" style="width:80px;padding:6px 4px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:12px;"><option value="">性别(自动)</option><option value="女">女</option><option value="男">男</option></select>
+  <select id="free-char-age" style="width:90px;padding:6px 4px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:12px;"><option value="">年龄(自动)</option><option value="青年">青年</option><option value="中年">中年</option><option value="老年">老年</option></select>
+  <input type="text" id="free-char-height" placeholder="身高(可选)" style="width:100px;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:12px;">
+  <button id="btn-create-char" style="padding:6px 14px;background:var(--accent);color:#fff;border:none;border-radius:var(--radius-sm);cursor:pointer;font-size:13px;white-space:nowrap;">创建角色</button>
+</div></div>
+        <div id="free-char-list" style="margin-top:4px;font-size:12px;color:var(--text-secondary);max-height:140px;overflow-y:auto;"></div>
+        <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">选择已保存角色后：生成 Prompt = 角色配置 + 当前输入</div>
+      </div>
+      
+      <!-- ===== Prompt 工作室面板 ===== -->
+      <!-- ===== 训练素材工作室面板 ===== -->
+      <!-- ===== 场景 LoRA 训练素材生产室 ===== -->
+      <div id="params-scene-material" style="display:none;">
+        <div class="ps-section" style="border:1px solid rgba(78,205,196,0.3);background:rgba(78,205,196,0.05);border-radius:8px;padding:10px 14px;">
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <span style="font-size:20px;">&#127758;</span>
+            <div>
+              <h2 style="margin:0 0 4px 0;font-size:15px;">场景 LoRA 训练素材生产室</h2>
+              <p style="margin:0;font-size:12px;color:var(--text-secondary);line-height:1.5;">
+                Flux2 Klein 9B + 场景分类 + 独立输出目录<br>
+                预览(1张) -> 批量生成 -> Approved/Rejected 标记
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 模板选择 -->
+        <div class="ps-section" style="margin-top:12px;">
+          <div class="ps-section-header"><h2>模板管理</h2></div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <select id="sm-template-select" style="flex:1;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:13px;">
+              <option value="">-- 选择模板 --</option>
+            </select>
+            <button id="sm-btn-save-template" style="padding:6px 12px;background:var(--accent-color);border:none;border-radius:4px;color:#000;cursor:pointer;font-size:12px;white-space:nowrap;">保存模板</button>
+            <button id="sm-btn-delete-template" style="padding:6px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:4px;color:#ff6b6b;cursor:pointer;font-size:12px;white-space:nowrap;">删除</button>
+          </div>
+        </div>
+
+        <!-- 参数配置 -->
+        <div class="ps-section" style="margin-top:8px;">
+          <div class="ps-section-header"><h2>生成参数</h2></div>
+          <div class="form-group"><label>标题</label><input type="text" id="sm-title" placeholder="输入模板标题..." style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:13px;"></div>
+          <div class="form-group" style="margin-top:6px;"><label>底模</label><select id="sm-model" style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:13px;"><option value="">加载中...</option></select></div>
+          <div class="form-group" style="margin-top:6px;"><label>尺寸预设</label><select id="sm-size-preset" style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:13px;"><option value="">-- 选择预设 --</option><option value="1344x768">16:9 横版 (1344x768)</option><option value="1216x912">4:3 横版 (1216x912)</option><option value="1024x1024">1:1 方形 (1024x1024)</option><option value="912x1216">3:4 竖版 (912x1216)</option><option value="768x1344">9:16 竖版 (768x1344)</option></select></div>
+          <div class="form-row" style="margin-top:6px;"><div class="form-group"><label>宽度</label><input type="number" id="sm-width" value="1344" min="64" max="4096" style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:13px;"></div><div class="form-group"><label>高度</label><input type="number" id="sm-height" value="768" min="64" max="4096" style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:13px;"></div></div>
+          <div class="form-group" style="margin-top:6px;"><label>场景分类</label><select id="sm-category" style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:13px;"><option value="">-- 选择分类 --</option><option value="修仙秘境">修仙秘境</option><option value="古风宫殿">古风宫殿</option><option value="现代都市">现代都市</option><option value="科幻未来">科幻未来</option><option value="自然山水">自然山水</option><option value="室内场景">室内场景</option><option value="废墟战场">废墟战场</option><option value="异域风情">异域风情</option><option value="暗黑魔界">暗黑魔界</option><option value="仙侠宗门">仙侠宗门</option></select></div>
+          <div class="form-group" style="margin-top:6px;"><label>正向提示词</label><textarea id="sm-positive" rows="3" placeholder="输入正向提示词..." style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:12px;resize:vertical;font-family:monospace;"></textarea></div>
+          <div class="form-group" style="margin-top:6px;"><label>反向提示词</label><textarea id="sm-negative" rows="2" placeholder="输入反向提示词..." style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:12px;resize:vertical;font-family:monospace;"></textarea></div>
+
+          <!-- 高级参数 -->
+          <div class="advanced-params-wrapper" style="margin-top:8px;">
+            <div class="sp-header" onclick="var el=document.getElementById('sm-advanced');el.style.display=el.style.display==='none'?'block':'none';this.querySelector('.sp-toggle').textContent=el.style.display==='none'?'+':'-'">
+              <span>高级参数</span><span class="sp-toggle">+</span>
+            </div>
+            <div id="sm-advanced" style="display:none;">
+              <div class="form-row" style="margin-top:6px;"><div class="form-group"><label>采样步数</label><input type="number" id="sm-steps" value="25" min="1" max="100" style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:13px;"></div><div class="form-group"><label>CFG</label><input type="number" id="sm-cfg" value="3.5" min="1.0" max="30.0" step="0.5" style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:13px;"></div></div>
+              <div class="form-group" style="margin-top:6px;"><label>Seed 策略</label>
+                <div class="radio-group" style="display:flex;gap:4px;">
+                  <div class="radio-item selected" id="sm-seed-random" data-value="random" style="flex:1;padding:4px 8px;text-align:center;background:var(--bg-card);border:1px solid var(--border);border-radius:4px;cursor:pointer;font-size:12px;">随机</div>
+                  <div class="radio-item" id="sm-seed-fixed" data-value="fixed" style="flex:1;padding:4px 8px;text-align:center;background:var(--bg-card);border:1px solid var(--border);border-radius:4px;cursor:pointer;font-size:12px;">固定</div>
+                </div>
+                <input type="number" id="sm-seed" value="0" min="0" style="width:100%;padding:4px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:12px;margin-top:4px;">
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-top:8px;"><label>批量数量</label><input type="number" id="sm-batch-count" value="10" min="1" max="500" style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:13px;"></div>
+        </div>
+
+        <!-- 操作按钮 -->
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+          <button id="sm-btn-preview" style="flex:1;min-width:120px;padding:8px 12px;background:var(--accent-color);border:none;border-radius:4px;color:#000;cursor:pointer;font-size:13px;font-weight:600;">生成预览 (1张)</button>
+          <button id="sm-btn-repreview" style="flex:1;min-width:120px;padding:8px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);cursor:pointer;font-size:13px;">重新生成预览</button>
+        </div>
+        <button id="sm-btn-batch" style="width:100%;margin-top:8px;padding:10px 12px;background:linear-gradient(135deg,#4ecdc4,#44a08d);border:none;border-radius:6px;color:#000;cursor:pointer;font-size:14px;font-weight:700;">使用当前参数批量生成 (10 张)</button>
+
+        <!-- 预览展示 -->
+        <div id="sm-preview-container" style="display:none;margin-top:12px;padding:12px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;"></div>
+        <div id="sm-preview-status" style="margin-top:6px;font-size:12px;color:var(--text-secondary);text-align:center;"></div>
+
+        <!-- 批量状态 -->
+        <div id="sm-batch-status" style="margin-top:8px;font-size:12px;color:var(--text-secondary);text-align:center;"></div>
+
+        <!-- 批量列表 / 详情 -->
+        <div class="ps-section" style="margin-top:12px;">
+          <div class="ps-section-header" style="display:flex;justify-content:space-between;align-items:center;">
+            <h2>批量结果</h2>
+            <button id="sm-btn-refresh-batches" style="padding:4px 8px;background:var(--bg-card);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);cursor:pointer;font-size:11px;">刷新</button>
+          </div>
+          <div id="sm-batch-list" style="max-height:300px;overflow-y:auto;"></div>
+          <div id="sm-batch-detail" style="display:none;">
+            <div style="margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+              <button id="sm-btn-close-detail" style="padding:4px 8px;background:var(--bg-card);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);cursor:pointer;font-size:11px;">&larr; 返回列表</button>
+              <span style="font-size:11px;color:var(--text-muted);">Shift+点击 = Rejected | 普通点击 = Approved</span>
+            </div>
+            <div id="sm-batch-detail-content" style="max-height:500px;overflow-y:auto;"></div>
+          </div>
+        </div>
+      </div>
+
+        <div id="params-material-studio" style="display:none;">
+        <div class="ps-section">
+          <div class="ps-section-header">
+            <span class="ps-step-badge">T</span>
+            <h2>训练素材工作室</h2>
+            <span class="ps-hint">身份锁定 + 变体爆炸 = LoRA 训练数据集</span>
+          </div>
+          <div class="form-group">
+            <label>选择角色身份</label>
+            <select id="tm-identity-select" style="width:100%;padding:8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:14px;">
+              <option value="">-- 加载中... --</option>
+            </select>
+            <div id="tm-identity-info" style="display:none;margin-top:8px;display:flex;gap:6px;flex-wrap:wrap;"></div>
+          </div>
+          <div class="form-group" style="margin-top:10px;">
+            <label>底模选择</label>
+            <select id="tm-model-type" style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:13px;">
+              <option value="sdxl" selected>SDXL (character.json)</option>
+              <option value="flux">Flux (flux_character.json)</option>
+              <option value="zimage">Z-Image (zimage_character.json)</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin-top:12px;">
+            <label>素材总量: <strong id="tm-total-display">150</strong> 张</label>
+            <input type="range" id="tm-total-slider" min="10" max="500" value="150" step="10" style="width:100%;accent-color:var(--accent-color);">
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--text-muted);">
+              <span>10</span><span>150</span><span>500</span>
+            </div>
+          </div>
+          <div class="form-group" style="margin-top:8px;">
+            <label>每批数量</label>
+            <select id="tm-batch-size" style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text-primary);font-size:13px;">
+              <option value="5">5 张/批</option>
+              <option value="10" selected>10 张/批</option>
+              <option value="20">20 张/批</option>
+              <option value="50">50 张/批</option>
+            </select>
+          </div>
+        </div>
+        <div class="ps-section">
+          <div class="ps-section-header">
+            <h2>策略比例</h2>
+            <span class="ps-hint">引擎自动按比例分配变体</span>
+          </div>
+          <div id="tm-strategy-panel" style="font-size:12px;color:var(--text-muted);">加载中...</div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:12px;">
+          <button class="ps-btn ps-btn-ghost" id="btn-tm-preview">预览 Prompt</button>
+          <button class="ps-btn ps-btn-primary" id="btn-tm-generate" disabled>生成训练素材</button>
+          <button class="ps-btn ps-btn-ghost" id="btn-tm-stop" style="display:none;">停止</button>
+        </div>
+        <div id="tm-preview-section" style="display:none;margin-top:12px;">
+          <div class="ps-section">
+            <div class="ps-section-header">
+              <h2>Prompt 预览</h2>
+              <span class="ps-hint">共 <strong id="tm-preview-count">0</strong> 条</span>
+            </div>
+            <div id="tm-preview-list" style="max-height:400px;overflow-y:auto;font-size:12px;"></div>
+          </div>
+        </div>
+        <div class="ps-status" id="tm-status"></div>
+      </div>
+
+      <!-- ===== 服道化素材工作室 统一面板 ===== -->
+      <div id="params-fudaohua-studio" style="display:none;">
+        <div class="ps-section" style="border:1px solid rgba(255,200,50,0.3);background:rgba(255,200,50,0.05);border-radius:8px;padding:10px 14px;">
+          <div style="display:flex;align-items:flex-start;gap:8px;">
+            <span style="font-size:20px;">👘</span>
+            <div>
+              <h2 style="margin:0 0 4px 0;font-size:15px;">服道化素材工作室</h2>
+              <p style="margin:0;font-size:12px;color:var(--text-secondary);line-height:1.5;">
+                <strong>固定元素</strong> + <strong>随机人物策略</strong>，训练纯净 LoRA<br>
+                训练结果：<span style="color:#ffc832;">服装LoRA · 道具LoRA · 妆容LoRA</span>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div id="fdh-subtab-bar" style="display:flex;gap:4px;margin-top:12px;">
+          <button class="fdh-subtab active" data-type="costume" style="flex:1;padding:8px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;color:var(--text-primary);cursor:pointer;font-size:13px;">👘 服装训练</button>
+          <button class="fdh-subtab" data-type="prop" style="flex:1;padding:8px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;color:var(--text-primary);cursor:pointer;font-size:13px;">⚔️ 道具训练</button>
+          <button class="fdh-subtab" data-type="makeup" style="flex:1;padding:8px;background:var(--bg-card);border:1px solid var(--border);border-radius:6px;color:var(--text-primary);cursor:pointer;font-size:13px;">💄 妆容训练</button>
+        </div>
+
+        <div class="ps-section" style="margin-top:8px;padding:12px 16px;">
+          <div class="ps-section-header">
+            <span class="ps-step-badge">①</span>
+            <h2 id="fdh-preset-label">训练配置</h2>
+          </div>
+          <div style="margin-top:8px;">
+            <label style="font-size:12px;color:var(--text-secondary);">标题</label>
+            <input type="text" id="fdh-template-title" placeholder="输入模板标题..." style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:13px;margin-top:2px;">
+          </div>
+          <div style="margin-top:8px;">
+            <label style="font-size:12px;color:var(--text-secondary);">正面提示词</label>
+            <textarea id="fdh-positive" rows="4" placeholder="输入正面提示词模板（可用变量：{character} {background} 等）..." style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:12px;margin-top:2px;resize:vertical;font-family:monospace;"></textarea>
+          </div>
+          <div style="margin-top:8px;">
+            <label style="font-size:12px;color:var(--text-secondary);">负面提示词</label>
+            <textarea id="fdh-negative" rows="3" placeholder="输入负面提示词..." style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:12px;margin-top:2px;resize:vertical;font-family:monospace;"></textarea>
+          </div>
+          <div style="display:flex;gap:6px;margin-top:8px;">
+            <button id="btn-fdh-save-template" style="flex:1;padding:6px 12px;background:var(--accent-color);border:none;border-radius:4px;color:#000;cursor:pointer;font-size:12px;font-weight:600;">💾 保存模板</button>
+            <button id="btn-fdh-delete-template" style="flex:1;padding:6px 12px;background:var(--bg-card);border:1px solid var(--border);border-radius:4px;color:var(--text-secondary);cursor:pointer;font-size:12px;">🗑 删除模板</button>
+          </div>
+          <div id="fdh-preset-info" style="margin-top:6px;font-size:12px;color:var(--text-muted);"></div>
+        </div>
+
+        <div class="ps-section" style="margin-top:4px;padding:8px 16px;">
+          <label style="font-size:12px;color:var(--text-secondary);">── 已保存模板 ──</label>
+          <div id="fdh-template-tags" style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;">加载中...</div>
+          <div style="font-size:11px;color:var(--text-muted);margin-top:2px;">（点击标签 → 自动填入标题+正反提示词）</div>
+        </div>
+
+        <div class="ps-section" style="margin-top:8px;padding:12px 16px;">
+          <div class="ps-section-header"><span class="ps-step-badge">②</span><h2>数据规模</h2></div>
+          <div style="display:flex;gap:6px;margin-top:8px;" id="fdh-scale-btns">
+            <button class="fdh-scale-btn" data-count="50" style="flex:1;padding:6px;background:var(--bg-card);border:1px solid var(--border);border-radius:4px;color:var(--text-secondary);cursor:pointer;font-size:12px;">50张<span style="font-size:10px;opacity:0.7;"><br>测试集</span></button>
+            <button class="fdh-scale-btn active" data-count="200" style="flex:1;padding:6px;background:var(--bg-card);border:2px solid var(--accent-color);border-radius:4px;color:var(--accent-color);cursor:pointer;font-size:12px;">200张<span style="font-size:10px;opacity:0.7;"><br>标准集</span></button>
+            <button class="fdh-scale-btn" data-count="500" style="flex:1;padding:6px;background:var(--bg-card);border:1px solid var(--border);border-radius:4px;color:var(--text-secondary);cursor:pointer;font-size:12px;">500张<span style="font-size:10px;opacity:0.7;"><br>增强集</span></button>
+            <button class="fdh-scale-btn" data-count="1000" style="flex:1;padding:6px;background:var(--bg-card);border:1px solid var(--border);border-radius:4px;color:var(--text-secondary);cursor:pointer;font-size:12px;">1000张<span style="font-size:10px;opacity:0.7;"><br>专业集</span></button>
+          </div>
+          <div style="margin-top:6px;">
+            <label style="font-size:12px;color:var(--text-secondary);">总量: <strong id="fdh-total-display">200</strong> 张</label>
+            <input type="range" id="fdh-total-slider" min="10" max="1000" value="200" step="10" style="width:100%;accent-color:var(--accent-color);margin-top:2px;">
+          </div>
+        </div>
+
+        <div class="ps-section" style="margin-top:8px;padding:12px 16px;">
+          <div class="ps-section-header"><span class="ps-step-badge">③</span><h2>生成参数</h2></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;">
+            <div><label style="font-size:12px;color:var(--text-secondary);">底模</label><select id="fdh-base-model" style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:13px;margin-top:2px;"></select></div>
+            <div><label style="font-size:12px;color:var(--text-secondary);">每批</label><select id="fdh-batch-size" style="width:100%;padding:6px 8px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:13px;margin-top:2px;"><option value="5">5 张/批</option><option value="10" selected>10 张/批</option><option value="20">20 张/批</option></select></div>
+          </div>
+          <div style="margin-top:8px;"><label style="font-size:12px;color:var(--text-secondary);">种子</label><div style="display:flex;gap:10px;align-items:center;margin-top:2px;"><label style="font-size:12px;cursor:pointer;"><input type="radio" name="fdh-seed-mode" checked> 随机</label><label style="font-size:12px;cursor:pointer;"><input type="radio" name="fdh-seed-mode"> 固定</label><input type="number" id="fdh-seed" placeholder="种子号" style="width:80px;padding:4px 6px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:12px;" disabled></div></div>
+        </div>
+
+        <div class="ps-section" style="margin-top:8px;padding:12px 16px;">
+          <div class="ps-section-header"><span class="ps-step-badge">④</span><h2>高级增强</h2></div>
+          <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap;">
+            <label style="font-size:12px;cursor:pointer;"><input type="checkbox" id="fdh-angle-random" checked> 角度随机</label>
+            <label style="font-size:12px;cursor:pointer;"><input type="checkbox" id="fdh-action-random" checked> 动作随机</label>
+            <label style="font-size:12px;cursor:pointer;"><input type="checkbox" id="fdh-lighting-random" checked> 光照随机</label>
+            <label style="font-size:12px;cursor:pointer;"><input type="checkbox" id="fdh-bg-random" checked> 背景随机</label>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap;">
+          <button class="ps-btn ps-btn-primary" id="btn-fdh-preview">👁 预览图片</button>
+          <button class="ps-btn ps-btn-accent" id="btn-fdh-generate">▶ 开始生成</button>
+          <button class="ps-btn ps-btn-ghost" id="btn-fdh-repreview" style="display:none;">🔄 重新预览</button>
+          <button class="ps-btn ps-btn-ghost" id="btn-fdh-prompt-preview">📋 Prompt预览</button>
+          <button class="ps-btn ps-btn-danger" id="btn-fdh-stop" style="display:none;">■ 停止</button>
+          <button class="ps-btn ps-btn-ghost" id="btn-fdh-export">📦 导出</button>
+        </div>
+
+        <div class="ps-section" style="margin-top:8px;padding:12px 16px;min-height:120px;text-align:center;" id="fdh-preview-area">
+          <div class="fdh-preview-placeholder" style="color:var(--text-muted);font-size:13px;padding:40px 0;">点击「预览图片」查看效果</div>
+        </div>
+
+        <div class="ps-section" style="margin-top:8px;padding:12px 16px;display:none;" id="fdh-prompt-section">
+          <div class="ps-section-header"><h2>Prompt 预览</h2></div>
+          <div id="fdh-prompt-list" style="max-height:300px;overflow-y:auto;font-size:12px;color:var(--text-secondary);line-height:1.6;margin-top:8px;"></div>
+        </div>
+
+        <div class="ps-section" style="margin-top:8px;padding:12px 16px;">
+          <div class="ps-section-header"><span class="ps-step-badge">⑤</span><h2>输出处理</h2><span style="font-size:11px;color:var(--text-muted);margin-left:8px;">生成完成后可用</span></div>
+          <div style="display:flex;gap:8px;margin-top:8px;">
+            <button class="ps-btn ps-btn-ghost" id="btn-fdh-quality">⭐ 质量评分</button>
+            <button class="ps-btn ps-btn-ghost" id="btn-fdh-dedup">🔍 自动去重</button>
+            <button class="ps-btn ps-btn-ghost" id="btn-fdh-filter">❌ 过滤低质量</button>
+          </div>
+        </div>
+
+        <div id="fdh-status" style="margin-top:8px;padding:6px 12px;background:var(--bg-card);border-radius:4px;font-size:12px;color:var(--text-muted);">就绪</div>
+      </div>
+
+
+      <div id="params-style-tags" style="display:none;">
+        <div class="ps-section">
+          <div class="ps-section-header">
+            <span class="ps-step-badge" style="background:#ffc832;">S</span>
+            <h2>风格标签</h2>
+            <span id="sp-selected-count" style="font-size:12px;color:var(--text-muted);">已选: 0</span>
+          </div>
+          <div id="sp-tags-container" style="margin-top:8px;"></div>
+          <div style="margin-top:8px;padding:8px;border:1px dashed var(--border);border-radius:6px;">
+            <input type="text" id="sp-custom-input" placeholder="输入自定义风格标签" style="width:100%;padding:6px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);font-size:13px;">
+            <div style="display:flex;gap:4px;margin-top:4px;">
+              <button class="ps-btn ps-btn-ghost" id="sp-custom-btn" style="font-size:11px;">添加</button>
+              <button class="ps-btn ps-btn-ghost" id="sp-clear-all" style="font-size:11px;">清除全部</button>
+            </div>
+            <div id="sp-custom-tags" style="margin-top:4px;display:flex;flex-wrap:wrap;gap:3px;"></div>
+          </div>
+        </div>
+      </div>
+      <!-- 生成按钮 -->
+      <div id="generate-controls" style="padding:12px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;margin-top:12px;">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <button class="ps-btn ps-btn-primary" id="btn-generate" style="padding:8px 20px;font-size:14px;">生成</button>
+          <button class="ps-btn ps-btn-ghost" id="btn-cancel" style="font-size:12px;">取消</button>
+          <label style="font-size:12px;cursor:pointer;white-space:nowrap;"><input type="checkbox" id="batch-mode-toggle"> 批量</label>
+        </div>
+      </div>
+    </div><!-- end panel-left -->
+
+    <!-- ===== 右侧：生成区 + 画廊 ===== -->
+    <div class="panel-right">
+      <!-- 生成区域 -->
+            <div id="generate-area" style="padding:12px 16px;background:var(--bg-card);border:1px solid var(--border);border-radius:8px;margin-bottom:12px;">
+        <div id="comfyui-offline-banner" style="display:none;padding:8px 12px;background:rgba(255,107,107,0.1);border:1px solid rgba(255,107,107,0.3);border-radius:6px;margin-bottom:10px;font-size:13px;color:#ff6b6b;">
+          ComfyUI离线 - 请启动ComfyUI服务
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <a href="/prompt-studio" id="qwen-quick-btn" style="display:flex;align-items:center;gap:6px;padding:6px 14px;background:linear-gradient(135deg,rgba(0,212,255,0.15),rgba(0,212,255,0.05));border:1px solid var(--accent-color);border-radius:var(--radius-sm);color:var(--accent-color);font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;text-decoration:none;" title="打开千问 Prompt 工作室">
+            <span style="display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;background:var(--accent-color);color:#000;font-weight:700;font-size:11px;">Q</span>
+            千问写提示词
+          </a>
+          <select id="active-card" style="display:none;">
+            <option value="">-- 选择卡片 --</option>
+          </select>
+          <span id="active-card-info" style="display:none;"></span>
+        </div>
+      </div>
+
+<!-- 任务列表 -->
+      <div style="margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <h3 style="margin:0;font-size:14px;">任务队列</h3>
+        </div>
+        <div id="task-list" style="max-height:200px;overflow-y:auto;"></div>
+      </div>
+
+      <!-- 画廊 -->
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+          <h3 style="margin:0;font-size:14px;">输出画廊</h3>
+          <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+            <select id="gallery-filter-category" style="padding:4px 8px;font-size:12px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);">
+              <option value="">全部类型</option>
+              <option value="character">角色</option>
+              <option value="scene">场景</option>
+              <option value="costume">服装道具</option>
+              <option value="img2img">图生图</option>
+            </select>
+            <select id="gallery-filter-genre" style="padding:4px 8px;font-size:12px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);">
+              <option value="">全部题材</option>
+              <option value="xianxia">仙侠</option>
+              <option value="wuxia">武侠</option>
+              <option value="xuanhuan">玄幻</option>
+              <option value="historical">古风</option>
+            </select>
+            <input type="text" id="gallery-filter-search" placeholder="搜索..." style="padding:4px 8px;font-size:12px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);width:120px;">
+            <select id="gallery-group-by" style="padding:4px 8px;font-size:12px;background:var(--bg-input);border:1px solid var(--border);border-radius:4px;color:var(--text-primary);">
+              <option value="">不分组</option>
+              <option value="project">按项目</option>
+              <option value="date">按日期</option>
+            </select>
+            <button class="ps-btn ps-btn-ghost" id="btn-refresh-gallery" style="font-size:11px;padding:4px 8px;">刷新</button>
+            <button class="ps-btn ps-btn-ghost" id="btn-clear-gallery-selection" style="font-size:11px;padding:4px 8px;">清除选择</button>
+          </div>
+        </div>
+        <div id="gallery-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;min-height:100px;"></div>
+      </div>
+    </div><!-- end panel-right -->
+  </div><!-- end main-content -->
+
+  <!-- ===== 图片放大弹窗 ===== -->
+  <div id="image-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.85);z-index:1000;justify-content:center;align-items:center;">
+    <span id="modal-close" style="position:absolute;top:20px;right:30px;font-size:32px;color:#fff;cursor:pointer;">&times;</span>
+    <img id="modal-img" style="max-width:90%;max-height:90%;border-radius:8px;object-fit:contain;">
+    <div id="modal-label" style="position:absolute;bottom:20px;left:50%;transform:translateX(-50%);color:#fff;font-size:14px;background:rgba(0,0,0,0.6);padding:8px 16px;border-radius:6px;"></div>
+  </div>
+
+  <!-- ===== Costume编辑弹窗 ===== -->
+  <div id="costume-modal" style="display:none;position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:999;">
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--bg-panel);border:1px solid var(--border);border-radius:12px;padding:24px;width:550px;max-height:80vh;overflow-y:auto;">
+      <h3 style="margin:0 0 16px 0;">编辑服装</h3>
+      <div class="form-group"><label>名称</label><input type="text" id="costume-edit-name" style="width:100%;"></div>
+      <div class="form-group"><label>服装</label><input type="text" id="costume-edit-outfit" style="width:100%;"></div>
+      <div class="form-group"><label>发型</label><input type="text" id="costume-edit-hairstyle" style="width:100%;"></div>
+      <div class="form-group"><label>妆容</label><input type="text" id="costume-edit-makeup" style="width:100%;"></div>
+      <div class="form-group"><label>配饰</label><input type="text" id="costume-edit-accessories" style="width:100%;"></div>
+      <div class="form-group"><label>道具</label><input type="text" id="costume-edit-props" style="width:100%;"></div>
+      <div class="form-group"><label>场景</label><input type="text" id="costume-edit-scene" style="width:100%;"></div>
+      <div id="costume-identity-display" style="font-size:12px;color:var(--text-muted);margin-bottom:8px;"></div>
+      <div style="display:flex;gap:8px;margin-top:12px;">
+        <button class="ps-btn ps-btn-primary" id="btn-save-card">保存</button>
+        <button class="ps-btn ps-btn-ghost" id="costume-btn-delete" style="color:#ff6b6b;">删除</button>
+      </div>
+    </div>
+  </div>
+
+  
+<!-- Scripts -->
+  <script src="/static/js/api.js"></script>
+  <script src="/static/js/components.js"></script>
+  <script src="/static/js/cards.js"></script>
+  <script src="/static/js/gallery.js"></script>
+  <script src="/static/js/history.js"></script>
+  <script src="/static/js/style-palette.js"></script>
+        <script src="/static/js/material-studio.js"></script>
+  
+  
+  
+  
+  <script src="/static/js/fudaohua-studio.js"></script>
+  <script src="/static/js/prompt-studio.js"></script>
+  <script src="/static/js/wd14_tagger.js"></script>
+  <script src="/static/js/scene-material-studio.js"></script>
+  <script src="/static/js/app.js?v=1781248928"></script>
+
+</body>
+</html>
