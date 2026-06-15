@@ -10,7 +10,7 @@ echo.
 :: 检查 Python
 python --version >nul 2>&1
 if %errorlevel% equ 0 (
-    echo   [√] Python 已安装
+    echo   [OK] Python 已安装
     goto :install_deps
 )
 
@@ -39,7 +39,7 @@ echo   [2/2] 安装依赖...
 pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 echo.
-echo   [√] 初始化配置...
+echo   [OK] 初始化配置...
 if not exist .env copy .env.example .env
 
 echo.
